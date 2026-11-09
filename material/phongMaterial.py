@@ -159,7 +159,8 @@ class PhongMaterial(Material):
             {
                 // a superfície está virada para a luz?
                 float cosAngle = dot(normalize(normal), -normalize(shadow0.lightDirection));
-                bool facingLight = (cosAngle > 0.01);
+                // ADAPTAÇÃO: limiar 0.15 (livro: 0.01) evita listras na borda iluminada/escura
+                bool facingLight = (cosAngle > 0.15);
                 // converte de [-1, 1] (clip space) para [0, 1] (UV e profundidade)
                 vec3 shadowCoord = (shadowPosition0.xyz + 1.0) / 2.0;
                 float closestDistanceToLight = texture(shadow0.depthTexture, shadowCoord.xy).r;

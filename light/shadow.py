@@ -20,7 +20,9 @@ class Shadow(object):
         self.camera.setOrthographic(left, right, bottom, top, near, far)
         self.lightSource.add(self.camera)
         # CLAMP_TO_BORDER: fora do mapa lê a borda branca = sem sombra
-        self.renderTarget = RenderTarget(resolution, properties={"wrap": GL_CLAMP_TO_BORDER})
+        # ADAPTAÇÃO: floatPrecision=True -> profundidade em 32 bits (ver renderTarget.py)
+        self.renderTarget = RenderTarget(resolution, properties={"wrap": GL_CLAMP_TO_BORDER},
+                                         floatPrecision=True)
         self.material = DepthMaterial()
         self.strength = strength
         self.bias = bias

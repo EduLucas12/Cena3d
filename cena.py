@@ -12,6 +12,7 @@ from light.ambientLight import AmbientLight
 from light.directionalLight import DirectionalLight
 from extras.movementRig import MovementRig
 from modelos.cenario import criarCenario
+from modelos.nave import Nave
 
 LARGURA, ALTURA = 1000, 700
 
@@ -45,10 +46,18 @@ class Cena(Base):
         # ---------- ambiente ----------
         self.pecas = criarCenario(self.scene)
 
+        # ---------- nave (modelo 1) ----------
+        self.nave = Nave()
+        self.nave.raiz.setPosition([0, 0.3, 0])     # em cima da plataforma
+        # começa com a escotilha virada para +x (de costas para a torre);
+        # na animação ela gira para "encontrar" o astronauta
+        self.nave.raiz.rotateY(pi / 2)
+        self.scene.add(self.nave.raiz)
+
         # ---------- sombras (shadow mapping, seção 6.9) ----------
         # cameraBounds = volume da câmera ortográfica da luz (esq, dir, baixo, cima, perto, longe)
         self.renderer.enableShadows(self.sol, strength=0.6, resolution=[2048, 2048],
-                                    cameraBounds=[-15, 15, -15, 15, 0, 50], bias=0.002)
+                                    cameraBounds=[-15, 15, -15, 15, 0, 50], bias=0.0015)
 
     def update(self):
         self.rig.update(self.input, self.deltaTime)
