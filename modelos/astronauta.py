@@ -114,6 +114,18 @@ class Astronauta(object):
 
         self.posePadrao()
 
+    def setTransform(self, posicao, guinada):
+        """M = Translação @ RotaçãoY(guinada) @ Escala. guinada=0 -> olha para +z (público)."""
+        self.raiz.transform = (Matrix.makeTranslation(*posicao)
+                               @ Matrix.makeRotationY(guinada)
+                               @ Matrix.makeScale(ESCALA))
+
+    def setVisivel(self, visivel):
+        # visible é uma propriedade de cada Mesh: percorre toda a sub-árvore
+        for no in self.raiz.getDescendantList():
+            if hasattr(no, "visible"):
+                no.visible = visivel
+
     # ------------------------------------------------------------------
     # Pose: a matriz de cada articulação é REFEITA a cada quadro:
     #   M = Translação(posição da junta) @ RotaçãoX(frente/trás) @ RotaçãoZ(para o lado)

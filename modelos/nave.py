@@ -2,6 +2,7 @@
 # Composta apenas com geometrias do framework (cilindro, cone, caixa, elipsoide).
 # A nave fica "em pé" no eixo +y; a escotilha/rampa fica na face +z local.
 from math import pi, sin
+from core.matrix import Matrix
 from core.mesh import Mesh
 from core.group import Group
 from geometry.boxGeometry import BoxGeometry
@@ -117,6 +118,14 @@ class Nave(object):
     # ------------------------------------------------------------------
     # Métodos usados pela animação
     # ------------------------------------------------------------------
+    def setTransform(self, posicao, guinada, inclinacao=0.0):
+        """Monta a matriz da nave do zero:
+        M = Translação(posição) @ RotaçãoZ(-inclinação) @ RotaçãoY(guinada)
+        guinada (yaw): para onde a escotilha aponta; inclinação: tomba para +x ao subir."""
+        self.raiz.transform = (Matrix.makeTranslation(*posicao)
+                               @ Matrix.makeRotationZ(-inclinacao)
+                               @ Matrix.makeRotationY(guinada))
+
     def setRampa(self, fracao):
         """0 = fechada, 1 = aberta. Gira o pivô só a diferença de ângulo."""
         alvo = fracao * ANGULO_RAMPA_ABERTA
@@ -136,5 +145,4 @@ class Nave(object):
         s = intensidade * tremor
         # a matriz do grupo é refeita do zero: escala sem acumular
         pos = self.chama.getPosition()
-        from core.matrix import Matrix
         self.chama.transform = Matrix.makeTranslation(*pos) @ Matrix.makeScale(s)

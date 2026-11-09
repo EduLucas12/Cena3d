@@ -148,7 +148,7 @@ def criarCenario(scene):
 
     # ---------------- cones de sinalização ----------------
     matCone = PhongMaterial(useShadow=True, properties={"baseColor": [1.0, 0.45, 0.05]})
-    for (x, z) in [(-3.5, 3.8), (3.5, 3.8), (-4.6, 0.0), (4.6, 0.0)]:
+    for (x, z) in [(-4.4, 4.2), (3.5, 3.8), (4.6, 0.0), (-4.2, -4.0)]:
         cone = Mesh(ConeGeometry(radius=0.2, height=0.5), matCone)
         cone.setPosition([x, 0.25, z])
         scene.add(cone)
